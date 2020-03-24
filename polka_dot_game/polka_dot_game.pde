@@ -10,6 +10,14 @@ boolean[] keys;
 boolean freeze;
 int renderMode;
 float checkBar;
+int tickCounter;
+String[] scoreText;
+String[] barText;
+color[] powerTextColors;
+color[] scoreTextColors;
+PVector centerPos;
+PVector textPos;
+PVector barPos;
 
 void setup() {
   fullScreen();
@@ -31,22 +39,64 @@ void config() {
   powerUpBar = 100;
   checkUseSpeed = 0.1;
   freezeUseSpeed = 1;
+  tickCounter = 0;
+  noSmooth();
 }
 
 void setupVariables() {
   keys = new boolean[4];
   enemies = new Circle[enemyCount];
+  textAlign(CENTER, CENTER);
+  centerPos = new PVector(width/2, height/2);
+  textPos = new PVector(width/2, height/2 + 0.03 * height);
+  barPos = new PVector(width * 0.09, height * 0.035 + 0.02 * height);
+  scoreText = new String[] {"You're just a small fish in a big pond", "Eat what is smaller than you", "How hard could it be.."};
+  barText = new String[] {"A : Show What You Can Eat", "C : Freeze Time"};
+  powerTextColors = new color[] {color(120, 360, 360), color(300, 360, 360)};
+  scoreTextColors = new color[] {color(90, 360, 360)};
 }
 
 void draw() { 
+  tickCounter += 1;
   background(204); 
   fill(0, 0, 360);
   circle(mouseX, mouseY, playerSize);
   drawEnemies();
-  text(score, width/2, height/2);
   drawPowerBar();
   drawCheckBar();
+  drawText();
 } 
+
+void drawText() {
+  fill(0, 0, 0);
+  for (int x = -1; x < 4; x++) {
+    text(score, width/2 + x, height/2);
+    text(score, width/2, height/2 + x);
+  }
+  fill(90, 360, 360);
+  text(score, width/2, height/2);
+
+  if (tickCounter < 300) {
+    listRender(scoreText, textPos, 16, scoreTextColors, 4, 0.03 * height);
+  } 
+
+  listRender(barText, barPos, 16, powerTextColors, 4, 0.02 * height);
+}
+
+void listRender(String[] lines, PVector position, int textSize, color[] colors, int weight, float shift) {
+  textSize(textSize);
+  fill(0, 0, 0);
+  for (int move = -1; move < weight; move++) {
+    for (int i = 0; i < lines.length; i++) {
+      text(lines[i], position.x + move, position.y + shift * i);
+      text(lines[i], position.x, position.y + move + shift * i);
+    }
+  }
+  for (int i = 0; i < lines.length; i++) {
+    fill(colors[i % colors.length]);
+    text(lines[i], position.x, position.y + shift * i);
+  }
+}
 
 void setupEnemies() {
   for (int i = 0; i < enemyCount; i++) {
@@ -152,7 +202,7 @@ void gameOver() {
 
 void drawPowerBar() {
   //rect(width * 0.80, height * 0.02, width / 0.0001 * powerUpBar / 100, height * 0.05);
-  fill(240, 360, 360);
+  fill(300, 360, 360);
   rect(width * 0.01, height * 0.02, (width / 5.5) * powerUpBar / 100, height * 0.01);
   if (keys[0]) {
     updatePowerBar();
