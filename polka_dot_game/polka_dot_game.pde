@@ -86,7 +86,7 @@ void drawText() {
 void listRender(String[] lines, PVector position, int textSize, color[] colors, int weight, float shift) {
   textSize(textSize);
   fill(0, 0, 0);
-  for (int move = -1; move < weight; move++) {
+  for (int move = -1; move < weight; move++) { //make this move in a circle right now it only moves up and down which isnt optimal
     for (int i = 0; i < lines.length; i++) {
       text(lines[i], position.x + move, position.y + shift * i);
       text(lines[i], position.x, position.y + move + shift * i);
