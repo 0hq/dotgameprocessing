@@ -10,7 +10,7 @@ PVector centerPos, textPos, barPos;
 void config() { //i started making a function for all the base values that each variable needed. 
   renderMode = false; //this function makes it much easier to restart the game because the entire gamestate is reset
   checkBar = 100; //i split this function in two for the non-configurable and configurable parts
-  textSize(40);
+  textSize(16);
   playerSize = 16;
   score = 0;
   enemyCount = 90;
@@ -19,6 +19,7 @@ void config() { //i started making a function for all the base values that each 
   checkUseSpeed = 0.1;
   freezeUseSpeed = 1;
   tickCounter = 0;
+  tripMode = true;
 }
 
 void setupVariables() { //i started making a function for all the base values that each variable needed. 
